@@ -1,0 +1,35 @@
+.input input {
+    border: none;
+    position: fixed;
+    bottom: 0;
+    height: 52px;
+    padding: 5px;
+    background: none;
+    color: white;
+    width: 100%;
+    right: 0;
+}
+.input span {
+    color: white;
+    margin-left: 5px;
+}
+main {
+    background-color: black;
+    height: calc(100vh - 40px - 16px);
+}
+#theresponce {
+    position: fixed;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+    margin-left: 5px;
+    height: calc(100vh - 40px - 16px - 60px);
+    width: 250vh;
+    color: white;
+}
+.input {
+    width: 100%;
+    position: fixed;
+    bottom: 1rem;
+}

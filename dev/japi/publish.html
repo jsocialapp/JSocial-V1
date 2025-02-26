@@ -1,0 +1,127 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>JSocial - DEV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="shortcut icon" href="https://jwn.social/api/media/custom/jsocial.png" type="image/x-icon">
+  </head>
+  <style>
+    #fileInput {
+      display: none;
+    }
+
+    #fileInputLabel {
+      padding: 10px;
+      color: white;
+    }
+  </style>
+  <body>
+  <main style="padding: 1rem;">
+    <div class="view-1">
+      <label class="btn btn-primary" for="fileInput" id="fileInputLabel" style="width: 100%">Upload extension file(.json or .jse)</label>
+      <input type="file" id="fileInput" onchange="handleFile()" accept=".json,.jse"/>
+    </div>
+    <div class="view-2">
+      <div class="form-floating mb-2">
+        <input type="email" class="form-control" id="extensionname" disabled value="">
+        <label for="extensionname">Name</label>
+      </div>
+      <div class="form-floating mb-2">
+        <textarea class="form-control" id="extensiondesc" style="height: 150px"></textarea>
+        <label for="extensiondesc">Description</label>
+      </div>
+      <div class="form-floating mb-2">
+        <input type="email" class="form-control" id="updatelink" disabled>
+        <label for="updatelink">Updates link</label>
+      </div>
+      <button class="btn btn-primary" style="width: 100%" id="publishbtn">PUBLISH</button>
+    </div>
+  </main>
+  <script>
+    document.getElementById("extensiondesc").value = ""
+    var host = location.hostname.split(".")
+    host.shift()
+    document.querySelector(".view-2").style.display = "none"
+    class Addon {
+      constructor(json) {
+        this.data = json
+        json.forEach(file => {
+          if(file.filename == "info.json") {
+            if(file.type == "JSON") {
+              this.info = file.content
+            } else {
+              console.error("ERROR LOADING ADDON: info.json not in JSON type")
+            }
+          }
+        })
+      }
+      getAsJSON() {
+        return JSON.stringify(this.data)
+      }
+    }
+    var uploadingaddon = null
+    function handleFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const contents = e.target.result;
+          uploadingaddon = new Addon(JSON.parse(contents))
+          document.getElementById("extensionname").value = uploadingaddon.info.name
+          if(uploadingaddon.info.onlinefile) {
+            document.getElementById("updatelink").value = uploadingaddon.info.onlinefile
+          } else {
+            document.getElementById("updatelink").value = `https://japi.${host.join('.')}/extension/`+uploadingaddon.info.id+".jse"
+          }
+          document.querySelector(".view-2").style.display = "block"
+          document.querySelector(".view-1").style.display = "none"
+          document.getElementById("publishbtn").onclick = function () {
+            var addon = JSON.parse(uploadingaddon.getAsJSON())
+            addon.forEach(file => {
+              if(file.filename == "info.json") {
+                if(!file.content.onlinefile) {
+                  file.content.onlinefile = `https://japi.${host.join('.')}/extension/`+uploadingaddon.info.id+".jse"
+                }
+              }
+            })
+            var myHeaders = new Headers();
+            myHeaders.append("token",localStorage.getItem("token"));
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({
+              "name":uploadingaddon.info.name,
+              "id":uploadingaddon.info.id,
+              "content":addon,
+              "desc":document.getElementById("extensiondesc").value
+            });
+
+            var requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              body: raw,
+              redirect: 'follow'
+            };
+
+            fetch("https://japi." + host.join('.') + "/publish", requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                      location = "/japi"
+                    })
+                    .catch(error => console.log('error', error));
+          }
+        };
+
+        reader.readAsText(file);
+      } else {
+        console.log('No file selected');
+      }
+    }
+  </script>
+  <script src="../main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+  </html>

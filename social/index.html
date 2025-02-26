@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSocial</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="/socket.io/socket.io.js"></script>
+    <meta name="description" content="JSocial is a new social media app. We do not track you or sell any information making sure your info is safe."/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L28QDE31MK"></script>
+    <link rel="shortcut icon" href="/api/media/custom/jsocial.png" type="image/x-icon">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-L28QDE31MK');
+    </script>
+</head>
+<body>
+    <main style="padding: 1rem">
+        <div id="feed"></div>
+    </main>
+    <div class="toast-container bottom-0 end-0 p-3" id="toastBox"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/index.js"></script>
+    <script src="/main.js"></script>
+</body>
+</html>

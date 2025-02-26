@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSocial</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="shortcut icon" href="/api/media/custom/jsocial.png" type="image/x-icon">
+  <meta content="noindex">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L28QDE31MK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-L28QDE31MK');
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="userprofile.css">
+</head>
+<body>
+<div style="padding: 1rem" main>
+  <a href="/manage/japi/store"><button class="btn btn-primary mb-2" style="width: 100%">INSTALL</button></a>
+  <div id="installed">
+  </div>
+</div>
+<div class="toast-container bottom-0 end-0 p-3" id="toastBox"></div>
+<script src="/main.js"></script>
+<script src="/manage/japi.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

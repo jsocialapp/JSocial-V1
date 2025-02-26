@@ -1,0 +1,7 @@
+.login {
+    margin: 15px;
+}
+
+input[element="login"] {
+    width: 100%;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSocial</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="shortcut icon" href="/api/media/custom/jsocial.png" type="image/x-icon">
+  <meta content="noindex">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L28QDE31MK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-L28QDE31MK');
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div style="padding: 1rem" main>
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h5 class="card-title" id="name" style="font-size: 24px; font-weight: bold"><img src="" id="img" height="64px" style="position:relative; margin-top: -5px;margin-right: 5px; border-radius: 50%;"></h5>
+      <p class="card-text text-muted" id="madeby"></p>
+      <p class="card-text" id="desc"></p>
+      <button class="btn btn-primary" id="download-btn" style="border-radius: 25px; position: absolute; top: 35px; right: 25px">Download</button>
+    </div>
+  </div>
+</div>
+<div class="toast-container bottom-0 end-0 p-3" id="toastBox"></div>
+<script>
+  if(location.pathname == "/manage/japi/product") {
+    location.assign("/manage/japi/store")
+  }
+</script>
+<script>
+  fetch("https://japi." + location.hostname + "/extension/" + location.pathname.split("/")[3] + ".jse").then(res => res.json()).then(res => {
+    var addon = new Addon(res.content)
+    document.getElementById("name").innerHTML = document.getElementById("name").innerHTML + addon.info.name
+    document.getElementById("desc").innerHTML = res.desc
+    document.getElementById("img").src = res.icon
+    if(addon.info.author) {
+      if(addon.info.author == "JSocial" && (res.owner == "vLcW3aVvzWAEtn6z7IsctQeeURMjltXjTifYRW44OXc30PJ5Lz03UWAEETT4jcEpPkKPWMOwWonL33g6aVsh6GWNYD87d9kn84F6glXNrhTNoM3xXK2Y8IDeTUbhBM" || res.owner == "95x9TxNerRKuIqExyA6PVTbZovqGKQbXFMu5wlb5nihKhHfuzjYbQtLI4RYI8l2ciKPJSfZgBTRaX5NmtlqwSPdUEWQFw4JVwfXbyTJ4aGWiiMqCWQBHI2Ioqdah0mOs")) {
+
+        document.getElementById("madeby").innerHTML = `Made by <img src="/api/media/badges/verified.png" alt="" height="18px" style="position:relative;margin-right: 3px;margin-left: 2px; top: -2px" />JSocial`
+      } else {
+        document.getElementById("madeby").innerHTML = `Made by ${addon.info.author}`
+      }
+    } else {
+      fetch("/api/user/" + res.owner).then(res=>res.json()).then(res => {
+        document.getElementById("madeby").innerHTML = `Made by ${res.displayname}`
+      })
+    }
+    document.getElementById("madeby").innerHTML = document.getElementById("madeby").innerHTML + " | Downloads: " + res.downloads
+    if(!addon.canIInstall()) {
+      document.getElementById("download-btn").innerText = "Uninstall"
+      document.getElementById("download-btn").className = "btn btn-danger"
+      document.getElementById("download-btn").onclick = function (){
+        var prefs = JSON.parse(localStorage.getItem("prefs"))
+        prefs.addons.splice(prefs.addons[addon.getAsJSON()] - 1, 1)
+        localStorage.setItem("prefs",JSON.stringify(prefs))
+        location.reload()
+      }
+    } else {
+      document.getElementById("download-btn").onclick = function (){
+        if(addon.install()) {
+          fetch("https://japi." + location.hostname + "/download/" + location.pathname.split("/")[3], {method:"POST"}).then(res => {
+            location.reload()
+          })
+        } else {
+          createNotification("Cannot install extension", "You already have this extension installed", "", true, false, "")
+        }
+      }
+
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="/main.js"></script>
+</body>
+</html>

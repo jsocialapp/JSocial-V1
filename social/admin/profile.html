@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" href="/api/media/custom/jsocial.png" type="image/x-icon">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L28QDE31MK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-L28QDE31MK');
+    </script>
+    <link rel="stylesheet" href="/admin/profiles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body style="overflow: hidden">
+<div class="cover-page" id="coverpage" style="width:100%; height:9999999%; z-index:9999; overflow: hidden; position:absolute; top: 0; left: 0; background-color: white;">
+    <div style="display: flex; align-items: center; justify-content: center;" id="coverpagespinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+<main style="display: flex;">
+    <div class="card" style="width: 12rem; margin-right: 1rem">
+        <img src="" class="card-img-top" data-pfp>
+        <div class="card-body">
+            <h5 class="card-title" data-displayname></h5>
+            <p class="card-text text-body-secondary" data-username></p>
+        </div>
+    </div>
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            <h5 class="card-title" data-displayname></h5>
+            <h6 class="card-title" data-name></h6>
+            <p class="card-text text-body-secondary" data-username></p>
+            <button type="button" class="btn btn-secondary mb-2" id="copyuidbtn" onclick="navigator.clipboard.writeText()">COPY UID</button>
+            <button type="button" class="btn btn-secondary mb-2" id="visitbtn">Visit</button>
+            <button type="button" class="btn btn-secondary mb-2" id="stealbtn">Steal</button>
+            <button type="button" class="btn btn-secondary mb-2" id="rsbtn">Reset Password</button>
+            <button type="button" class="btn btn-secondary mb-2" id="postedit">Edit post</button>
+            <button type="button" class="btn btn-secondary mb-2" id="postdelete">Delete post</button>
+            <h5 class="mb-2">Badges</h5>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="owner.badge">
+                <label class="form-check-label" for="owner.badge"><img src="/api/media/badges/owner.png" height="18"></label>
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="old-owner.badge">
+                <label class="form-check-label" for="old-owner.badge"><img src="/api/media/badges/old-owner.png" height="18"></label>
+
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="admin.badge">
+                <label class="form-check-label" for="admin.badge"><img src="/api/media/badges/admin.png" height="18"></label>
+
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="dev.badge">
+                <label class="form-check-label" for="dev.badge"><img src="/api/media/badges/dev.png" height="18"></label>
+
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="mod.badge">
+                <label class="form-check-label" for="mod.badge"><img src="/api/media/badges/mod.png" height="18"></label>
+
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="bot.badge">
+                <label class="form-check-label" for="bot.badge"><img src="/api/media/badges/bot.png" height="18"></label>
+
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="verified.badge">
+                <label class="form-check-label" for="verified.badge"><img src="/api/media/badges/verified.png" height="18"></label>
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="og.badge">
+                <label class="form-check-label" for="og.badge"><img src="/api/media/badges/og.png" height="18"></label>
+            </div>
+            <div class="form-check" badge>
+                <input class="form-check-input" type="checkbox" value="" id="artist.badge">
+                <label class="form-check-label" for="artist.badge"><img src="/api/media/badges/artist.png" height="18"></label>
+            </div>
+            <h5 class="mb-2">Permissions</h5>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.dashboard">
+                <label class="form-check-label" for="perm.admin.dashboard">Admin Dashboard</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.profiles.edit.posts">
+                <label class="form-check-label" for="perm.admin.profiles.edit.posts">Edit posts</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.profiles">
+                <label class="form-check-label" for="perm.admin.profiles">Profiles</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.profiles.edit">
+                <label class="form-check-label" for="perm.admin.profiles.edit">Edit Profiles</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.profiles.edit.badges">
+                <label class="form-check-label" for="perm.admin.profiles.edit.badges">Edit Badges</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.profiles.permissions">
+                <label class="form-check-label" for="perm.admin.profiles.permissions">Edit Permissions</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.menu">
+                <label class="form-check-label" for="perm.admin.menu">Admin Menu</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.ban">
+                <label class="form-check-label" for="perm.admin.ban">Ban users</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.chats">
+                <label class="form-check-label" for="perm.admin.chats">Manage chats</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.massmail">
+                <label class="form-check-label" for="perm.admin.massmail">Mass mail</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.resetpassword">
+                <label class="form-check-label" for="perm.admin.resetpassword">Change password</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.admin.steal">
+                <label class="form-check-label" for="perm.admin.steal">Steal Account</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.post.create">
+                <label class="form-check-label" for="perm.post.create">Create post</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.post.like">
+                <label class="form-check-label" for="perm.post.like">Like posts</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.account.public.edit">
+                <label class="form-check-label" for="perm.account.public.edit">Edit profile</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.messanger.send">
+                <label class="form-check-label" for="perm.messanger.send">Send Messages</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.messanger.creategroup">
+                <label class="form-check-label" for="perm.messanger.creategroup">Create group chats</label>
+            </div>
+            <div class="form-check form-switch" perm>
+                <input class="form-check-input" type="checkbox" role="switch" id="perm.messanger.use">
+                <label class="form-check-label" for="perm.messanger.use">Use the messanger</label>
+            </div>
+            <h5>Punishments</h5>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" banna data-bs-target="#banmodal">Ban</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" banna data-bs-target="#unbanmodal">Unban</button>
+            <div class="modal fade" id="banmodal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="bantitle">Ban UNKNOWN</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="reason" placeholder="i dont like you">
+                                <label for="reason">REASON</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="bantime" aria-label="Floating label select example">
+                                    <option value="30s">30 seconds</option>
+                                    <option value="30m">30 minutes</option>
+                                    <option value="1h">1 hour</option>
+                                    <option value="2h">2 hours</option>
+                                    <option value="6h">6 hours</option>
+                                    <option value="1d">1 day</option>
+                                    <option value="3d">3 days</option>
+                                    <option value="1w">1 week</option>
+                                    <option value="2w">2 weeks</option>
+                                    <option value="1m">1 month</option>
+                                    <option value="2m">2 months</option>
+                                    <option value="3m">3 months</option>
+                                    <option value="6m">6 months</option>
+                                    <option value="1y">1 year</option>
+                                    <option value="2y">2 years</option>
+                                    <option value="3y">3 years</option>
+                                    <option value="4y">4 years</option>
+                                    <option value="5y">5 years</option>
+                                    <option value="10y">10 years</option>
+                                    <option value="15y">15 years</option>
+                                    <option value="forever">A while</option>
+                                </select>
+                                <label for="bantime">Time</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="adminpin" placeholder="0000">
+                                <label for="adminpin">PIN</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="banbtn">Ban</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="unbanmodal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="unbantitle">Unban UNKNOWN</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="unbanadminpin" placeholder="0000">
+                                <label for="unbanadminpin">PIN</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="unbanbtn">Unban</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<div class="alert alert-primary text-center" id="unsaved" role="alert" style="position: fixed; bottom: 0; left: 0; width: 100%; display: none">
+    Unsaved work
+    <button class="btn btn-primary">Save changes</button>
+</div>
+<div class="toast-container bottom-0 end-0 p-3" id="toastBox"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="/main.js"></script>
+<script src="/admin/profile.js"></script>
+</body>
+</html>

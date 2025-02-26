@@ -1,0 +1,22 @@
+.onlineusers {
+    position: fixed;
+    bottom: 65px;
+    left: calc(25% + 20px);
+}
+.onlineusers img {
+    border-radius: 50%;
+}
+.onlineusers img:nth-child(even) {
+    animation-delay: 500ms;
+}
+@keyframes typing {
+    0% {
+        transform: translate(0,0px);
+    }
+    50% {
+        transform: translate(0,-15px);
+    }
+    100% {
+        transform: translate(0,0px);
+    }
+}

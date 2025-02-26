@@ -1,0 +1,13 @@
+*[nomargin] {
+    margin:0;
+}
+.stats a,.stats span {
+    text-decoration: none;
+    color: black;
+}
+.stats span {
+    cursor: text;
+}
+.stats a:hover {
+    text-decoration: underline;
+}

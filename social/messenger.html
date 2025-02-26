@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSocial</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="messenger.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="/api/media/custom/jsocial.png" type="image/x-icon">
+    <script src="/socket.io/socket.io.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L28QDE31MK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-L28QDE31MK');
+    </script>
+    <style>
+        nav {
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div class="modal fade" id="newchatmodal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">New Chat</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="groupnameinput" placeholder="The boys">
+                        <label for="groupnameinput">Chat name</label>
+                    </div>
+                    <h5>Members</h5>
+                    <h6 id="members"></h6>
+                    <div id="cards">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="createchat">Create chat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 75%; height: calc(100% - 4rem - 64px); position:fixed; overflow-y: scroll; right: 0;" id="ting">
+        <embed style="overflow-y: scroll;">
+            <div style="margin-left: 3rem; margin-right: 3rem" id="chatboxes"></div>
+        </embed>
+    </div>
+    <div style="width: 25%; overflow: scroll; position:fixed; height: calc(100vh - 49px)" id="leftside">
+        <button class="btn btn-success" style="width: 100%; border-radius: 0;" data-bs-toggle="modal" data-bs-target="#newchatmodal">NEW CHAT</button>
+        <div  style="width: 25%; overflow: scroll; position:fixed; height: calc(100vh - 86px)" id="chats"></div>
+    </div>
+    <div class="onlineusers">
+    </div>
+    <input type="text" style="width: calc(75% - 30px); position:fixed; bottom: 0; right: 0; padding: 10px; border: none; border-radius: 50px; color: black; margin:15px; background-color: #cecece" id="textbox" placeholder="Messaging ...">
+    <button id="sentbtn" style="background-color: transparent; outline: none; border: none; position:fixed; bottom: 25px; right: 35px;"><img src="/api/media/custom/send.svg"></button>
+</main>
+<div class="toast-container bottom-0 end-0 p-3" id="toastBox"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="/main.js"></script>
+<script src="/messanger.js"></script>
+</body>
+</html>
