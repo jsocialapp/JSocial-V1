@@ -12,7 +12,7 @@ module.exports = {
 };
 ```
 
-I am waving the copyright of this code. Do not use my branding. If you do release this. Change the name, change the logo.\
+You are free to use and distribute any of this code. If you decide to distrubute this code. You must change primary branding(name, logo, favicon, etc).\
 ALSO PLEASE PUT A PROPER ENCRYPTION METHOD ON PASSWORDS. FOR THE LOVE OF GOD BASE 64 IS THE WORLDS WORST FORM OF ENCRYPTION.\
 Also have fun fixing my messy and buggy code. Also the way database's are done in json is horrible.
 
